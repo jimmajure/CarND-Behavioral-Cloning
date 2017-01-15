@@ -26,4 +26,24 @@ To compensate for this, I filtered out a given percentage of the values near zer
 
 ### Data Generator
 
-I used a data generator to facilitate both the recovery data and the filtering of near-zero values. The 
+I used a data generator to facilitate both the recovery data and the filtering of near-zero values. The generator constructor method is shown here:
+
+```
+SimulatorGenerator(data, include_params)
+```
+
+The data parameter allows one or more datasets to be specified as inputs to the generator. The generator expects the data parameter to contain a list of tuples. Each tuple contains a the name of a directory followed by a list of tuples each of which contains a camera and a steering adjustment. Here is an example of specifying three data directories, one with data from the center of the road, one with data from the left-hand side of the road, and one with data from the right-hand side of the road. Cameras that are to the either side of the road center are adjusted to direct the car back to the road center.
+
+```
+data = [
+    ("/home/jim/workspace/drive_data_center_2",[('left',0.05),('center',0.0),('right',-0.05)]),
+    ("/home/jim/workspace/drive_data_left_2",[('left',0.32),('center',0.3),('right',0.25)]),
+    ("/home/jim/workspace/drive_data_right_2",[('left',-0.25),('center',-0.3),('right',-0.32)]),
+    ]
+```
+
+The include_params parameter is a tuple that contains the value defining "near-zero" and a percentage of near-zero values to be included in the training/validation data. Here is an example that specifies that 15% of the data with steering angles with an absolute value less than or equal to 0.01 should be included in the training data.
+
+```
+include_params=(0.01,15)
+```
