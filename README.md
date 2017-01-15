@@ -84,3 +84,16 @@ The models considered are described in the following table.
 |```model6```|This is ```model5``` with BatchNormalization layers added after each convolution layer. (This was inspired by the InceptionV3 model in Keras.|
 |```model7```|This is ```model6``` with l2 weight normalization for each convolution and dense layer.|
 
+## Data Sets
+
+I experimented with several data sets when building the model. They are described in the table below.
+
+|Data Set|Description|
+|---|---|
+|```udc_data```|The dataset provided by UDC.|
+|```drive_data_center```|A data set containing images captured while driving in the center of the roadway. The data set includes 2-3 laps in **both directions** on the track.|
+|```drive_data_left```|A data set containing images captured while driving on the left-hand side of the roadway. The data set includes 2-3 laps in **both directions** on the track.|
+|```drive_data_right```|A data set containing images captured while driving on the right-hand side of the roadway. The data set includes 2-3 laps in **both directions** on the track.|
+|```drive_data_center_2```|The ```drive_data_center``` data set.|
+|```drive_data_left_2```|The ```drive_data_left``` data set with 2 additional laps driven on the left-hand side of the road.|
+|```drive_data_right_2```|The ```drive_data_right``` data set with 2 additional laps driven on the right-hand side of the road.|
