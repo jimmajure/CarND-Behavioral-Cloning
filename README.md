@@ -12,13 +12,15 @@ In order to build a model that successfully guides the car around the track, it 
 
 Instead of trying to capture recovery images by driving from the edge to the road to the center, I captured entire laps while driving on the left-hand side of the road and on the right-hand side of the road and saved them into separate folders. This is shown in the figure below.
 
-**figure 1**
+
+![alt tag](readme_images/roadway.png)
+**Figure 1: positions on the roadway used to collect training data.**
 
 With the training data from the left-hand (or right-hand) side of the road in a separate data set, I then adjusted the steering angle for each of the images to simulate recovering from the side of the roadway back to the middle of the roadway.
 
 ### Steering Angle Distribution
 
-A key insight of the training data that helped me progress in building a successful model was that most of the training data contained steering angles of near 0.0 values. The large number of training points with steering angle near 0.0 dominated the learning and made it difficult for the model to "learn" to manuver around sharp corners. (This insight was taken from the forums in a post by Milutin Nikolic in the forums). The distibution of steering angle values from a sample data set is shown in the figure below.
+A key insight of the training data that helped me progress in building a successful model was that most of the training data contained steering angles of near 0.0 values. The large number of training points with steering angle near 0.0 dominated the learning and made it difficult for the model to "learn" to manuver around sharp corners. (This insight was taken from the forums in a post by Milutin Nikolic). The distibution of steering angle values from a sample data set is shown in the figure below.
 
 **figure 2**
 
