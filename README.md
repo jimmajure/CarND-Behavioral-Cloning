@@ -186,7 +186,7 @@ During playback, I inreased the throttle setting from 0.2 to 0.3 and the car suc
 This model is included as ```it_works_2.(json,h5)```.
 
 ### model.json
-The model that I submitted uses all of the cameras in the left/right/center data sets. This model produces the best driving performance of all of the models I considered.
+The model that I submitted uses all of the cameras in the data sets. This model produces the best driving performance of all of the models I considered.
 
 Here are the specs I used for this model fit.
 ```
@@ -197,9 +197,17 @@ data = [
 ]
 ```
 
-During playback, I inreased the throttle setting from 0.2 to 0.3 and the car successfully navigated the track, but veered considerably from side to side.
+During playback, I inreased the throttle setting from 0.2 to 0.3 and the car successfully navigated the track with minimal swerving.
 
 This model is included as ```model.(json,h5)```.
+
+### Additional Attempts
+I also considered two additional models, ```model6``` and ```model7```. ```model6``` introduced several BatchNormalization layer and ```model7``` introduced l2 weight normalization. 
+
+```model6``` yielded similar results to ```model5```, although the car performance seemed to be a little less steady. 
+
+```model7``` produced a model that caused considerable more swerving behavior in the car.
+
 
 
 ### Models
@@ -236,3 +244,6 @@ I experimented with several data sets when building the model. They are describe
 |```drive_data_center_2```|The ```drive_data_center``` data set.|
 |```drive_data_left_2```|The ```drive_data_left``` data set with 2 additional laps driven on the left-hand side of the road.|
 |```drive_data_right_2```|The ```drive_data_right``` data set with 2 additional laps driven on the right-hand side of the road.|
+
+## Final Thoughts
+As I consider the work on this project 
