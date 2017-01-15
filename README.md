@@ -10,7 +10,7 @@ This README file contains a description of a solution to the Behavioral Cloning 
 
 The model that I am submitting is based on a implementation of the model in the NVIDIA paper, End to End Learning for Self-Driving Cars. The Keras model summary is provided in Listing 1, below. 
 
-The core model included the following layers:
+The core model described in the NVIDIA paper included the following layers:
 
 1. 3 5x5 convolution layers
 1. 2 3x3 convolution layers
@@ -21,42 +21,41 @@ To the core model, I added several dropout layers and max pooling layers as indi
 ***Listing 1: Keras model summary of submitted model.***
 
 ```
-____________________________________________________________________________________________________
-Layer (type)                     Output Shape          Param #     Connected to                     
+Layer (type)                           Output Shape          Param #     Connected to                     
 ====================================================================================================
-maxpooling2d_1 (MaxPooling2D)    (None, 80, 160, 3)    0           maxpooling2d_input_1[0][0]       
+maxpooling2d_1 (MaxPooling2D)          (None, 80, 160, 3)    0           maxpooling2d_input_1[0][0]       
 ____________________________________________________________________________________________________
-convolution2d_1 (Convolution2D)  (None, 38, 78, 24)    1824        maxpooling2d_1[0][0]             
+convolution2d_1 (Convolution2D), 5x5   (None, 38, 78, 24)    1824        maxpooling2d_1[0][0]             
 ____________________________________________________________________________________________________
-maxpooling2d_2 (MaxPooling2D)    (None, 37, 77, 24)    0           convolution2d_1[0][0]            
+maxpooling2d_2 (MaxPooling2D)          (None, 37, 77, 24)    0           convolution2d_1[0][0]            
 ____________________________________________________________________________________________________
-dropout_1 (Dropout)              (None, 37, 77, 24)    0           maxpooling2d_2[0][0]             
+dropout_1 (Dropout) p=0.5              (None, 37, 77, 24)    0           maxpooling2d_2[0][0]             
 ____________________________________________________________________________________________________
-convolution2d_2 (Convolution2D)  (None, 17, 37, 36)    21636       dropout_1[0][0]                  
+convolution2d_2 (Convolution2D), 5x5   (None, 17, 37, 36)    21636       dropout_1[0][0]                  
 ____________________________________________________________________________________________________
-convolution2d_3 (Convolution2D)  (None, 7, 17, 48)     43248       convolution2d_2[0][0]            
+convolution2d_3 (Convolution2D), 5x5   (None, 7, 17, 48)     43248       convolution2d_2[0][0]            
 ____________________________________________________________________________________________________
-maxpooling2d_3 (MaxPooling2D)    (None, 6, 16, 48)     0           convolution2d_3[0][0]            
+maxpooling2d_3 (MaxPooling2D)          (None, 6, 16, 48)     0           convolution2d_3[0][0]            
 ____________________________________________________________________________________________________
-dropout_2 (Dropout)              (None, 6, 16, 48)     0           maxpooling2d_3[0][0]             
+dropout_2 (Dropout) p=0.5              (None, 6, 16, 48)     0           maxpooling2d_3[0][0]             
 ____________________________________________________________________________________________________
-convolution2d_4 (Convolution2D)  (None, 4, 14, 64)     27712       dropout_2[0][0]                  
+convolution2d_4 (Convolution2D), 3x3   (None, 4, 14, 64)     27712       dropout_2[0][0]                  
 ____________________________________________________________________________________________________
-convolution2d_5 (Convolution2D)  (None, 2, 12, 64)     36928       convolution2d_4[0][0]            
+convolution2d_5 (Convolution2D), 3x3   (None, 2, 12, 64)     36928       convolution2d_4[0][0]            
 ____________________________________________________________________________________________________
-maxpooling2d_4 (MaxPooling2D)    (None, 1, 11, 64)     0           convolution2d_5[0][0]            
+maxpooling2d_4 (MaxPooling2D)          (None, 1, 11, 64)     0           convolution2d_5[0][0]            
 ____________________________________________________________________________________________________
-dropout_3 (Dropout)              (None, 1, 11, 64)     0           maxpooling2d_4[0][0]             
+dropout_3 (Dropout) p=0.5              (None, 1, 11, 64)     0           maxpooling2d_4[0][0]             
 ____________________________________________________________________________________________________
-flatten_1 (Flatten)              (None, 704)           0           dropout_3[0][0]                  
+flatten_1 (Flatten)                    (None, 704)           0           dropout_3[0][0]                  
 ____________________________________________________________________________________________________
-dense_1 (Dense)                  (None, 100)           70500       flatten_1[0][0]                  
+dense_1 (Dense)                        (None, 100)           70500       flatten_1[0][0]                  
 ____________________________________________________________________________________________________
-dense_2 (Dense)                  (None, 50)            5050        dense_1[0][0]                    
+dense_2 (Dense)                        (None, 50)            5050        dense_1[0][0]                    
 ____________________________________________________________________________________________________
-dense_3 (Dense)                  (None, 10)            510         dense_2[0][0]                    
+dense_3 (Dense)                        (None, 10)            510         dense_2[0][0]                    
 ____________________________________________________________________________________________________
-dense_4 (Dense)                  (None, 1)             11          dense_3[0][0]                    
+dense_4 (Dense)                        (None, 1)             11          dense_3[0][0]                    
 ====================================================================================================
 Total params: 207,419
 Trainable params: 207,419
@@ -65,7 +64,15 @@ ________________________________________________________________________________
 ```
 ### Model Fitting
 
-The model was 
+The model was trained with the following parameters:
+
+|Parameter|Description|
+|---|---|
+|loss function|mean-squared error|
+|epochs|early stopping based on the loss function, tolerance 0.001|
+|optimizer|Adam optimizer|
+
+The data used for training included 18425 training samples and 7897 validation samples. (See the Data Specifications for Training the Submitted Model section for more details.)
 
 ## Training Data
 
