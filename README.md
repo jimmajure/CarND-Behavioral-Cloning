@@ -1,6 +1,72 @@
 # CarND-Behavioral-Cloning
 
-This README file contains 
+This README file contains a description of a solution to the Behavioral Cloning project in the Udacity Self-driving Car Nano Degree program. The orgainzation of the discussion is as follows:
+
+1. I describe the model submitted for the project.
+2. I describe training data used and how it was generated.
+3. I describe the process for developing and evaluating the model.
+
+## Submitted Model
+
+The model that I am submitting is based on a implementation of the model in the NVIDIA paper, End to End Learning for Self-Driving Cars. The Keras model summary is provided in Listing 1, below. 
+
+The core model included the following layers:
+
+1. 3 5x5 convolution layers
+1. 2 3x3 convolution layers
+1. 3 fully connected dense layers
+
+To the core model, I added several dropout layers and max pooling layers as indicated in Listing 1. The dropout layers are intended to help prevent model overfitting.
+
+***Listing 1: Keras model summary of submitted model.***
+
+```
+____________________________________________________________________________________________________
+Layer (type)                     Output Shape          Param #     Connected to                     
+====================================================================================================
+maxpooling2d_1 (MaxPooling2D)    (None, 80, 160, 3)    0           maxpooling2d_input_1[0][0]       
+____________________________________________________________________________________________________
+convolution2d_1 (Convolution2D)  (None, 38, 78, 24)    1824        maxpooling2d_1[0][0]             
+____________________________________________________________________________________________________
+maxpooling2d_2 (MaxPooling2D)    (None, 37, 77, 24)    0           convolution2d_1[0][0]            
+____________________________________________________________________________________________________
+dropout_1 (Dropout)              (None, 37, 77, 24)    0           maxpooling2d_2[0][0]             
+____________________________________________________________________________________________________
+convolution2d_2 (Convolution2D)  (None, 17, 37, 36)    21636       dropout_1[0][0]                  
+____________________________________________________________________________________________________
+convolution2d_3 (Convolution2D)  (None, 7, 17, 48)     43248       convolution2d_2[0][0]            
+____________________________________________________________________________________________________
+maxpooling2d_3 (MaxPooling2D)    (None, 6, 16, 48)     0           convolution2d_3[0][0]            
+____________________________________________________________________________________________________
+dropout_2 (Dropout)              (None, 6, 16, 48)     0           maxpooling2d_3[0][0]             
+____________________________________________________________________________________________________
+convolution2d_4 (Convolution2D)  (None, 4, 14, 64)     27712       dropout_2[0][0]                  
+____________________________________________________________________________________________________
+convolution2d_5 (Convolution2D)  (None, 2, 12, 64)     36928       convolution2d_4[0][0]            
+____________________________________________________________________________________________________
+maxpooling2d_4 (MaxPooling2D)    (None, 1, 11, 64)     0           convolution2d_5[0][0]            
+____________________________________________________________________________________________________
+dropout_3 (Dropout)              (None, 1, 11, 64)     0           maxpooling2d_4[0][0]             
+____________________________________________________________________________________________________
+flatten_1 (Flatten)              (None, 704)           0           dropout_3[0][0]                  
+____________________________________________________________________________________________________
+dense_1 (Dense)                  (None, 100)           70500       flatten_1[0][0]                  
+____________________________________________________________________________________________________
+dense_2 (Dense)                  (None, 50)            5050        dense_1[0][0]                    
+____________________________________________________________________________________________________
+dense_3 (Dense)                  (None, 10)            510         dense_2[0][0]                    
+____________________________________________________________________________________________________
+dense_4 (Dense)                  (None, 1)             11          dense_3[0][0]                    
+====================================================================================================
+Total params: 207,419
+Trainable params: 207,419
+Non-trainable params: 0
+____________________________________________________________________________________________________
+```
+### Model Fitting
+
+The model was 
+
 ## Training Data
 
 Training data were collected using the simulator in training mode. There are two aspects of the data to consider for successful fitting of a model to predict steering angle:
@@ -17,17 +83,17 @@ Instead of trying to capture recovery images by driving from the edge to the roa
 
 **Figure 1: positions on the roadway used to collect training data.**
 
-With the training data from the left-hand (or right-hand) side of the road in a separate data set, I then adjusted the steering angle for each of the images to simulate recovering from the side of the roadway back to the middle of the roadway.
+With the training data from the left-hand (or right-hand) side of the road in a separate data set, I then adjusted the steering angle for each of the images to simulate recovering from the side of the roadway back to the middle of the roadway. This is described in more detail in the Data Generator section below.
 
 ### Steering Angle Distribution
 
 A key insight of the training data that helped me progress in building a successful model was that most of the training data contained steering angles of near 0.0 values. The large number of training points with steering angle near 0.0 dominated the learning and made it difficult for the model to "learn" to manuver around sharp corners. (This insight was taken from the forums in a post by Milutin Nikolic). The distibution of steering angle values from a sample data set is shown in the figure below.
 
-![alt tag](readme_images/roadway.png)
+![alt tag](readme_images/near_zero.png)
 
 **Figure 2: Distribution of steering angles in the data set used to train the model**
 
-To compensate for this, I filtered out a given percentage of the values near zero when generating data for the model fit runs.
+As figure 2 shows, the number of samples in which the steering angle is very near zero is several times larger than the number of samples for steering angles greater than zero. To compensate for this, I filtered out a given percentage of the values near zero when generating data for the model fit runs. This is described in more detail in the Data Generator section below.
 
 ### Data Generator
 
@@ -58,8 +124,17 @@ The generator class builds a generator for both training and validation accordin
 1. for each remaining data point, add a value for each of the cameras specified, adjusting the steering angle by the given values
 1. shuffle/split the data, retaining 30% of the values for validation
 
-An example of using the generator is shown here.
+### Data Specifications for Training the Submitted Model
+The following code was used to create the generator.
 ```
+data = [
+    ("/home/jim/workspace/drive_data_center_2",[('left',0.05),('center',0.0),('right',-0.05)]),
+    ("/home/jim/workspace/drive_data_left_2",[('left',0.32),('center',0.3),('right',0.25)]),
+    ("/home/jim/workspace/drive_data_right_2",[('left',-0.25),('center',-0.3),('right',-0.32)]),
+    ]
+
+include_params=(0.01,15)
+generator = SimulationGenerator(data, include_params)
 hist = mdl.fit_generator(generator=generator.train_generator(), 
                 samples_per_epoch=generator.get_train_size(),
                 nb_epoch=50,
