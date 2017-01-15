@@ -79,4 +79,8 @@ The models considered are described in the following table.
 |---|---|
 |```model1```|This is the basic network from the NVIDIA paper. The images are expected to have dimensions of 80x160, i.e., preprocessing is expected to resize the images from the original 160x320.|
 |```model2```|This is ```model1``` with DropOut layers inserted after the 1st 5x5 convolution layer, after the 3rd 5x5 convolution layer, and after the 1st fully connected layer.|
-|```model4```|This is ```model2``` but expecting image dimensions of 160x320 and with a MaxPooling layer added at the beginning of the model that reduces the image dimensions to 80x160|
+|```model4```|This is ```model2``` but expecting image dimensions of 160x320 and with a MaxPooling layer added at the beginning of the model that reduces the image dimensions to 80x160.|
+|```model5```|This is ```model4``` with MaxPooling layers added prior to each DropOut layer.|
+|```model6```|This is ```model5``` with BatchNormalization layers added after each convolution layer. (This was inspired by the InceptionV3 model in Keras.|
+|```model7```|This is ```model6``` with l2 weight normalization for each convolution and dense layer.|
+
