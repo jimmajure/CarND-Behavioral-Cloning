@@ -32,7 +32,7 @@ I used a data generator to facilitate both the recovery data and the filtering o
 SimulatorGenerator(data, include_params)
 ```
 
-The data parameter allows one or more datasets to be specified as inputs to the generator. The generator expects the data parameter to contain a list of tuples. Each tuple contains a the name of a directory followed by a list of tuples each of which contains a camera and a steering adjustment. Here is an example of specifying three data directories, one with data from the center of the road, one with data from the left-hand side of the road, and one with data from the right-hand side of the road. Cameras that are to the either side of the road center are adjusted to direct the car back to the road center.
+The data parameter allows one or more datasets to be specified as inputs to the generator. The generator expects the data parameter to contain a list of tuples. Each tuple contains a the name of a directory and a list of tuples each of which contains a camera and a steering adjustment. Here is an example of specifying three data directories, one with data from the center of the road, one with data from the left-hand side of the road, and one with data from the right-hand side of the road. Cameras that are to the either side of the road center are adjusted to direct the car back to the road center.
 
 ```
 data = [
@@ -42,8 +42,24 @@ data = [
     ]
 ```
 
-The include_params parameter is a tuple that contains the value defining "near-zero" and a percentage of near-zero values to be included in the training/validation data. Here is an example that specifies that 15% of the data with steering angles with an absolute value less than or equal to 0.01 should be included in the training data.
+The include_params parameter is a tuple that contains the value defining "near-zero" and a percentage of near-zero values to be included in the training/validation data. Here is an example that specifies that 15% of the data with steering angles with an absolute value less than or equal to 0.01 should be included in the training data. The near-zero values selected were taken from a uniform random distribution.
 
 ```
 include_params=(0.01,15)
+```
+The generator class builds a generator for both training and validation according to the following steps:
+
+1. process the data in each data set and retain the specified percentage of near-zero values
+1. for each remaining data point, add a value for each of the cameras specified, adjusting the steering angle by the given values
+1. shuffle/split the data, retaining 30% of the values for validation
+
+An example of using the generator is shown here.
+```
+hist = mdl.fit_generator(generator=generator.train_generator(), 
+                samples_per_epoch=generator.get_train_size(),
+                nb_epoch=50,
+                verbose=2,
+                validation_data=generator.validation_generator(),
+                nb_val_samples=generator.get_validation_size(),
+                callbacks=[EarlyStopping('val_loss', 0.001, 1)])
 ```
