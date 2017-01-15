@@ -175,7 +175,7 @@ I started with ```model1``` and the data provided by Udacity. I worked my way th
 ### it_works_1.json
 My initial breakthrough was when I started filtering out data points with steering angle near zero. This provided my first successful circumnavigation of the track. However, the car veered from side to side and came close to hitting the curb several times. 
 
-During playback, I inreased the throttle setting from 0.2 to 0.3 and the car failed just after the big left-hand turn.
+During playback, I increased the throttle setting from 0.2 to 0.3 and the car failed just after the big left-hand turn.
 
 Also, the success was not repeatable. Running the model fit mutliple times with the same settings yielded different weights most of which didn't produce a workable model.
 
@@ -196,7 +196,7 @@ data = [
 ]
 ```
 
-During playback, I inreased the throttle setting from 0.2 to 0.3 and the car successfully navigated the track, but veered considerably from side to side.
+During playback, I increased the throttle setting from 0.2 to 0.3 and the car successfully navigated the track, but veered considerably from side to side.
 
 This model is included in the repository as ```it_works_2.(json,h5)```.
 
@@ -212,7 +212,7 @@ data = [
 ]
 ```
 
-During playback, I inreased the throttle setting from 0.2 to 0.3 and the car successfully navigated the track with minimal swerving.
+During playback, I increased the throttle setting from 0.2 to 0.3 and the car successfully navigated the track with minimal swerving.
 
 This model is included in the repository as ```model.(json,h5)```.
 
