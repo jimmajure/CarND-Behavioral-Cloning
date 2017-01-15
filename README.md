@@ -12,9 +12,11 @@ The model that I am submitting is based on a implementation of the model in the 
 
 The core model described in the NVIDIA paper included the following layers:
 
-1. 3 5x5 convolution layers
-1. 2 3x3 convolution layers
-1. 3 fully connected dense layers
+|Layers|
+|---|
+|3 5x5 convolution layers|
+|2 3x3 convolution layers|
+|3 fully connected dense layers|
 
 To the core model, I added several dropout layers and max pooling layers as indicated in Listing 1. The dropout layers are intended to help prevent model overfitting.
 
