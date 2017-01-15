@@ -65,3 +65,18 @@ hist = mdl.fit_generator(generator=generator.train_generator(),
                 nb_val_samples=generator.get_validation_size(),
                 callbacks=[EarlyStopping('val_loss', 0.001, 1)])
 ```
+## Models
+
+Several models were considered beginning with an implementation of the model in the NVIDIA paper, End to End Learning for Self-Driving Cars. The core model included the following layers:
+
+1. 3 5x5 convolution layers
+1. 2 3x3 convolution layers
+1. 3 fully connected dense layers
+
+The models considered are described in the following table.
+
+|Model|Description|
+|---|---|
+|```model1```|This is the basic network from the NVIDIA paper. The images are expected to have dimensions of 80x160, i.e., preprocessing is expected to resize the images from the original 160x320.|
+|```model2```|This is ```model1``` with DropOut layers inserted after the 1st 5x5 convolution layer, after the 3rd 5x5 convolution layer, and after the 1st fully connected layer.|
+|```model4```|This is ```model2``` but expecting image dimensions of 160x320 and with a MaxPooling layer added at the beginning of the model that reduces the image dimensions to 80x160|
