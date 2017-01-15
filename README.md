@@ -97,6 +97,18 @@ This is shown in Figure 1, below.
 
 **Figure 1: positions on the roadway used to collect training data.**
 
+![alt tag](readme_images/left.jpg)
+
+**Figure 2: Example of image taken from the left-hand side of the road.**
+
+![alt tag](readme_images/center.jpg)
+
+**Figure 2: Example of image taken from the center side of the road.**
+
+![alt tag](readme_images/right.jpg)
+
+**Figure 3: Example of image taken from the right-hand side of the road.**
+
 The way that steering angle adjustments were applied is described in more detail in the Data Generator section below.
 
 ### Steering Angle Distribution
@@ -105,9 +117,9 @@ A key insight of the training data that helped me progress in building a success
 
 ![alt tag](readme_images/near_zero.png)
 
-**Figure 2: Distribution of steering angles in the data set used to train the model**
+**Figure 4: Distribution of steering angles in the data set used to train the model**
 
-As figure 2 shows, the number of samples in which the steering angle is very near zero is several times larger than the number of samples for steering angles greater than zero. To compensate for this, I filtered out a given percentage of the values near zero when generating data for the model fit runs. This is described in more detail in the Data Generator section below.
+As Figure 4 shows, the number of samples in which the steering angle is very near zero is several times larger than the number of samples for steering angles greater than zero. To compensate for this, I filtered out a given percentage of the values near zero when generating data for the model fit runs. This is described in more detail in the Data Generator section below.
 
 ### Data Generator
 
