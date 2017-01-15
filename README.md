@@ -144,7 +144,7 @@ The following code was used to create the generator used in the submitted model.
 ```
 data = [
     ("/home/jim/workspace/drive_data_center_2",[('left',0.05),('center',0.0),('right',-0.05)]),
-Traii    ("/home/jim/workspace/drive_data_left_2",[('left',0.32),('center',0.3),('right',0.25)]),
+    ("/home/jim/workspace/drive_data_left_2",[('left',0.32),('center',0.3),('right',0.25)]),
     ("/home/jim/workspace/drive_data_right_2",[('left',-0.25),('center',-0.3),('right',-0.32)]),
     ]
 
@@ -155,7 +155,7 @@ generator = SimulationGenerator(data, include_params)
 
 To develop the submitted model, I iterated over successive refinements of both the model and the training data used. The models that I considered are described in the Models section, below, and the data sets that I considered are described in the Data Sets section, below. (My model running code logged all model runs in the file named, ```results.csv```. This file is included in the github repository for your review.)
 
-I started with ```model1``` and the data provided by Udacity. I worked my way through ```model1```, ```model2```, ```model4``` and ```model5``` without producing a model that allowed the car to fully navigate the track. I was able to navigate most off the track, but the sharp right-hand turn continued to cause problems.
+I started with ```model1``` and the data provided by Udacity. I worked my way through ```model1```, ```model2```, ```model4``` and ```model5``` without producing a model that allowed the car to fully navigate the track. I was able to navigate most off the track, but the sharp left-hand turn continued to cause problems.
 
 ### it_works_1.json
 My initial breakthrough was when I started filtering out data points with steering angle near zero. This provided my first successful circumnavigation of the track. However, the car veered from side to side and came close to hitting the curb several times. 
@@ -164,10 +164,10 @@ During playback, I inreased the throttle setting from 0.2 to 0.3 and the car fai
 
 Also, the success was not repeatable. Running the model fit mutliple times with the same settings yielded different weights most of which didn't produce a workable model.
 
-This model is included as ```it_works_1.(json,h5)```.
+This model is included in the repository as ```it_works_1.(json,h5)```.
 
 ### Onward
-In order to improve performance, I played around with using multiple cameras, providing steering angle adjustments for the left and righ cameras, but with little luck.
+In order to improve performance, I played around with using multiple cameras, providing steering angle adjustments for the left and right cameras. I also tried adjusting the near-zero inclusion parameters. I was not able to build a reliably working model.
 
 ### it_works_2.json
 My next breakthrough was when I introduced the new data sets on the left-hand and right-hand side of the roads, as described in the Training Data section, above. For my initial attempt with this data set, I used ```model4``` and only the center camera from each of the data sets. 
@@ -183,7 +183,7 @@ data = [
 
 During playback, I inreased the throttle setting from 0.2 to 0.3 and the car successfully navigated the track, but veered considerably from side to side.
 
-This model is included as ```it_works_2.(json,h5)```.
+This model is included in the repository as ```it_works_2.(json,h5)```.
 
 ### model.json
 The model that I submitted uses all of the cameras in the data sets. This model produces the best driving performance of all of the models I considered.
@@ -199,16 +199,14 @@ data = [
 
 During playback, I inreased the throttle setting from 0.2 to 0.3 and the car successfully navigated the track with minimal swerving.
 
-This model is included as ```model.(json,h5)```.
+This model is included in the repository as ```model.(json,h5)```.
 
 ### Additional Attempts
 I also considered two additional models, ```model6``` and ```model7```. ```model6``` introduced several BatchNormalization layer and ```model7``` introduced l2 weight normalization. 
 
 ```model6``` yielded similar results to ```model5```, although the car performance seemed to be a little less steady. 
 
-```model7``` produced a model that caused considerable more swerving behavior in the car.
-
-
+```model7``` produced a model that caused considerable more swerving behavior in the car. ```model7``` also took  consierably more time to train.
 
 ### Models
 
@@ -245,5 +243,4 @@ I experimented with several data sets when building the model. They are describe
 |```drive_data_left_2```|The ```drive_data_left``` data set with 2 additional laps driven on the left-hand side of the road.|
 |```drive_data_right_2```|The ```drive_data_right``` data set with 2 additional laps driven on the right-hand side of the road.|
 
-## Final Thoughts
-As I consider the work on this project 
+
