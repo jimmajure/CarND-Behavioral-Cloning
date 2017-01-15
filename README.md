@@ -83,6 +83,9 @@ Training data were collected using the simulator in training mode. There are two
 1. The inclusion of appropriate recovery training data
 1. The distribution the steering angle data in the training data
 
+### Image Preprocessing and Normalization
+As the images are read from the disk, they are pre-processed by converting from RGB to YUV and by scaling the image values through a linear transformation to the range [-0.5,0.5]. This preprocessing is done in the ```adjust_image``` method of ```model.py```.
+
 ### Recovery Data
 In order to build a model that successfully guides the car around the track, it is important to have data that tells the model how to recover when the car approaches the roadway sides. The suggestion in the instructions was to turn the image capture on and off when the car was moving from the edges to the center of the road. In practice this was quite difficult due to the ergonomics of the simulator.
 
