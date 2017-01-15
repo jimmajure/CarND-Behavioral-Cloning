@@ -129,7 +129,7 @@ The ```include_params``` parameter is a tuple that contains the value defining "
 ```
 include_params=(0.01,15)
 ```
-The SimulatorGenerator class builds a generator methods for both training and validation according to the following steps:
+The SimulatorGenerator class builds generator methods for both training and validation according to the following steps:
 
 1. process the data in each data set and retain the specified percentage of near-zero values
 1. for each remaining data point, add a value for each of the cameras specified, adjusting the steering angle by the given values
@@ -144,27 +144,73 @@ The following code was used to create the generator used in the submitted model.
 ```
 data = [
     ("/home/jim/workspace/drive_data_center_2",[('left',0.05),('center',0.0),('right',-0.05)]),
-    ("/home/jim/workspace/drive_data_left_2",[('left',0.32),('center',0.3),('right',0.25)]),
+Traii    ("/home/jim/workspace/drive_data_left_2",[('left',0.32),('center',0.3),('right',0.25)]),
     ("/home/jim/workspace/drive_data_right_2",[('left',-0.25),('center',-0.3),('right',-0.32)]),
     ]
 
 include_params=(0.01,15)
 generator = SimulationGenerator(data, include_params)
-hist = mdl.fit_generator(generator=generator.train_generator(), 
-                samples_per_epoch=generator.get_train_size(),
-                nb_epoch=50,
-                verbose=2,
-                validation_data=generator.validation_generator(),
-                nb_val_samples=generator.get_validation_size(),
-                callbacks=[EarlyStopping('val_loss', 0.001, 1)])
 ```
-## Models
+## Developing the Model
+
+To develop the submitted model, I iterated over successive refinements of both the model and the training data used. The models that I considered are described in the Models section, below, and the data sets that I considered are described in the Data Sets section, below. (My model running code logged all model runs in the file named, ```results.csv```. This file is included in the github repository for your review.)
+
+I started with ```model1``` and the data provided by Udacity. I worked my way through ```model1```, ```model2```, ```model4``` and ```model5``` without producing a model that allowed the car to fully navigate the track. I was able to navigate most off the track, but the sharp right-hand turn continued to cause problems.
+
+### it_works_1.json
+My initial breakthrough was when I started filtering out data points with steering angle near zero. This provided my first successful circumnavigation of the track. However, the car veered from side to side and came close to hitting the curb several times. 
+
+During playback, I inreased the throttle setting from 0.2 to 0.3 and the car failed just after the big left-hand turn.
+
+Also, the success was not repeatable. Running the model fit mutliple times with the same settings yielded different weights most of which didn't produce a workable model.
+
+This model is included as ```it_works_1.(json,h5)```.
+
+### Onward
+In order to improve performance, I played around with using multiple cameras, providing steering angle adjustments for the left and righ cameras, but with little luck.
+
+### it_works_2.json
+My next breakthrough was when I introduced the new data sets on the left-hand and right-hand side of the roads, as described in the Training Data section, above. For my initial attempt with this data set, I used ```model4``` and only the center camera from each of the data sets. 
+
+Here is the data specs I used for this model fit.
+```
+data = [
+    ('drive_data_center_2', [('center', 0.0)]), 
+    ('drive_data_left_2', [('center', 0.3)]), 
+    ('drive_data_right_2', [('center', -0.3)])
+]
+```
+
+During playback, I inreased the throttle setting from 0.2 to 0.3 and the car successfully navigated the track, but veered considerably from side to side.
+
+This model is included as ```it_works_2.(json,h5)```.
+
+### model.json
+The model that I submitted uses all of the cameras in the left/right/center data sets. This model produces the best driving performance of all of the models I considered.
+
+Here are the specs I used for this model fit.
+```
+data = [
+    ('drive_data_center_2', [('left', 0.05), ('center', 0.0), ('right', -0.05)]), 
+    ('drive_data_left_2', [('left', 0.32), ('center', 0.3), ('right', 0.25)]), 
+    ('drive_data_right_2', [('left', -0.25), ('center', -0.3), ('right', -0.32)])
+]
+```
+
+During playback, I inreased the throttle setting from 0.2 to 0.3 and the car successfully navigated the track, but veered considerably from side to side.
+
+This model is included as ```model.(json,h5)```.
+
+
+### Models
 
 Several models were considered beginning with an implementation of the model in the NVIDIA paper, End to End Learning for Self-Driving Cars. The core model included the following layers:
 
-1. 3 5x5 convolution layers
-1. 2 3x3 convolution layers
-1. 3 fully connected dense layers
+|Layers|
+|---|
+|3 5x5 convolution layers|
+|2 3x3 convolution layers|
+|3 fully connected dense layers|
 
 The models considered are described in the following table.
 
@@ -177,7 +223,7 @@ The models considered are described in the following table.
 |```model6```|This is ```model5``` with BatchNormalization layers added after each convolution layer. (This was inspired by the InceptionV3 model in Keras.|
 |```model7```|This is ```model6``` with l2 weight normalization for each convolution and dense layer.|
 
-## Data Sets
+### Data Sets
 
 I experimented with several data sets when building the model. They are described in the table below.
 
